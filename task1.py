@@ -14,10 +14,32 @@ schema = StructType([
     StructField("timestamp", StringType(), True)
 ])
 
-# Read streaming data from socket
+# -------------------------------------------------------------
+# Read streaming data from socket (provided by data_generator.py)
+# -------------------------------------------------------------
+raw_stream = spark.readStream \
+    .format("socket") \
+    .option("host", "0.0.0.0") \
+    .option("port", 9999) \
+    .load()
 
-# Parse JSON data into columns using the defined schema
+# -------------------------------------------------------------
+# Parse the incoming JSON messages into columns using schema
+# -------------------------------------------------------------
+parsed_stream = raw_stream.select(
+    from_json(col("value"), schema).alias("data")
+).select("data.*")
 
-# Print parsed data to the CSV files
+# -------------------------------------------------------------
+# Write parsed data to CSV files in real time
+# -------------------------------------------------------------
+query = parsed_stream.writeStream \
+    .outputMode("append") \
+    .format("csv") \
+    .option("path", "outputs/task1/") \
+    .option("checkpointLocation", "rides_checkpoint_task1/") \
+    .option("header", True) \
+    .start()
 
+# Keep the query running
 query.awaitTermination()
