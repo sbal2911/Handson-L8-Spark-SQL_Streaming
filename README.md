@@ -210,9 +210,13 @@ window_start,window_end,driver_id,total_fare
 
 While running ```python task2.py ``` I was not getting sufficient amount of batch files in my console and neither were the output files getting generated. Everytime I tried to run the command, it gave me **batch_0** file that was empty and then it did not show me any other files generation.
 
+**Note:** This issue is also highlighted in the **Issues** section of the Github repository.
+
 ## **Challenges fixed**
 
 I tried stopping the previous ```python task1.py``` and then ran the command ```python task2.py``` in a separate terminal and it started producing sufficient files. It was mandatory to run one task at a time in separate terminals.
+
+**Note:** This workaround is also highlighted in the **Issues** section of the Github repository.
 
 ---
 
